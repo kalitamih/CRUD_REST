@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node src/index.ts",
     "watch": "nodemon",
-    "lint": "tsc --noEmit && tslint -c tslint.json 'src/**/*.{ts,tsx}'" 
+    "lint": "tsc --noEmit && tslint -c tslint.json 'src/**/*.{ts,tsx}'"
   },
   "husky": {
     "hooks": {
@@ -47,9 +47,11 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "@types/joi": "^14.3.4"
   },
-  "dependencies": {
-    "express": "^4.17.1"
+  "dependencies": { 
+    "express": "^4.17.1",
+    "joi": "^14.3.1"
   }
 }
