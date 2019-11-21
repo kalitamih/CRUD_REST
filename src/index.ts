@@ -18,8 +18,12 @@ const listUsers: ListUsers = {};
 
 app.get("/users/:id", async (req, res, next) => {
   const { id } = req.params;
-  const user = listUsers.id;
-  res.json({ message: "Resource fetched" });
+  const user = listUsers[id];
+  if (user) {
+    res.json({ user });
+  } else {
+    next();
+  }
 });
 
 app.listen(port, () => {
