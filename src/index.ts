@@ -17,11 +17,12 @@ interface ListUsers {
 
 const listUsers: ListUsers = {};
 
-const schema = Joi.object().keys({
+const bodySchema = Joi.object().keys({
   age: Joi.number()
     .integer()
     .min(4)
-    .max(130),
+    .max(130)
+    .required(),
   login: Joi.string()
     .alphanum()
     .required(),
@@ -29,6 +30,19 @@ const schema = Joi.object().keys({
     .alphanum()
     .required(),
 });
+
+const querySchema = Joi.object().keys({
+  limit: Joi.number()
+    .integer()
+    .min(1)
+    .max(1000)
+    .required(),
+  loginSubstring: Joi.string()
+    .alphanum()
+    .required(),
+});
+
+const idSchema = Joi.string().guid({ version: "uuidv4" });
 
 const sortByLogin = (id1: string, id2: string): number =>
   listUsers[id1].login > listUsers[id2].login ? 1 : -1;
@@ -61,6 +75,10 @@ app.get("/users/:id", async (req, res, next) => {
 
 app.post("/users", async (req, res, next) => {
   const { body } = req;
+  const { error } = Joi.validate(body, bodySchema);
+  if (error) {
+    next(error);
+  }
   const id = uuid();
   listUsers[id] = { ...body, isDeleted: false };
   res.status(201).json({ user: { id, ...listUsers[id] } });
@@ -68,6 +86,10 @@ app.post("/users", async (req, res, next) => {
 
 app.patch("/users/:id", async (req, res, next) => {
   const { body } = req;
+  const { error } = Joi.validate(body, bodySchema);
+  if (error) {
+    next(error);
+  }
   const { id } = req.params;
   const user = listUsers[id];
   if (user && !user.isDeleted) {
