@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import {
+  changeUser,
   createUser,
   deleteUser,
   getAutoSuggestUsers,
@@ -14,21 +15,7 @@ import {
 const app = express();
 const port = 8081;
 
-interface User {
-  login: string;
-  passsword: string;
-  age: number;
-  isDeleted: boolean;
-}
-
-interface ListUsers {
-  [key: string]: User;
-}
-
-const listUsers: ListUsers = {};
-
-const sortByLogin = (id1: string, id2: string): number =>
-  listUsers[id1].login > listUsers[id2].login ? 1 : -1;
+app.use(express.json());
 
 app.get("/users", validateQuery, getAutoSuggestUsers);
 
@@ -36,17 +23,7 @@ app.get("/users/:id", validateId, getUser);
 
 app.post("/users", validateBody, createUser);
 
-app.patch("/users/:id", validateBody, validateId, (req, res, next) => {
-  const { body } = req;
-  const { id } = req.params;
-  const user = listUsers[id];
-  if (user && !user.isDeleted) {
-    listUsers[id] = { ...listUsers[id], ...body };
-    res.status(204).json({});
-  } else {
-    res.status(404).json({ message: `User with ${id} is not found` });
-  }
-});
+app.patch("/users/:id", validateBody, validateId, changeUser);
 
 app.delete("/users/:id", validateId, deleteUser);
 
