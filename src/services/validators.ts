@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Joi from "joi";
+import Joi, { ValidationError, ValidationErrorItem } from "joi";
 
 const bodySchema = Joi.object().keys({
   age: Joi.number()
@@ -28,39 +28,35 @@ const querySchema = Joi.object().keys({
 
 const idSchema = Joi.string().guid({ version: "uuidv4" });
 
-export const validateBody = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const validateBody = (req: Request, _: Response, next: NextFunction) => {
   const { body } = req;
   const { error } = Joi.validate(body, bodySchema);
   if (error) {
-    next(error);
+    next({ ...error, name: "bodyValidationError" });
   }
   next();
 };
 
-export const validateId = (req: Request, res: Response, next: NextFunction) => {
+export const validateId = (req: Request, _: Response, next: NextFunction) => {
   const {
     params: { id },
   } = req;
   const { error } = Joi.validate(id, idSchema);
   if (error) {
-    next(error);
+    next({ ...error, name: "idValidationError" });
   }
   next();
 };
 
 export const validateQuery = (
   req: Request,
-  res: Response,
+  _: Response,
   next: NextFunction
 ) => {
   const { query } = req;
   const { error } = Joi.validate(query, querySchema);
   if (error) {
-    next(error);
+    next({ ...error, name: "queryValidationError" });
   }
   next();
 };

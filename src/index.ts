@@ -1,4 +1,5 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
+import { getError400, getError404 } from "./controllers/error";
 import {
   changeUser,
   createUser,
@@ -6,11 +7,7 @@ import {
   getAutoSuggestUsers,
   getUser,
 } from "./controllers/users";
-import {
-  validateBody,
-  validateId,
-  validateQuery,
-} from "./middleware/validators";
+import { validateBody, validateId, validateQuery } from "./services/validators";
 
 const app = express();
 const port = 8081;
@@ -27,9 +24,9 @@ app.patch("/users/:id", validateBody, validateId, changeUser);
 
 app.delete("/users/:id", validateId, deleteUser);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(400).json({ message: error });
-});
+app.use(getError404);
+
+app.use(getError400);
 
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
