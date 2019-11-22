@@ -1,28 +1,13 @@
 import express from "express";
 import { getError400, getError404 } from "./controllers/error";
-import {
-  changeUser,
-  createUser,
-  deleteUser,
-  getAutoSuggestUsers,
-  getUser,
-} from "./controllers/users";
-import { validateBody, validateId, validateQuery } from "./services/validators";
+import userRouter from "./routes/userRouter";
 
 const app = express();
 const port = 8081;
 
 app.use(express.json());
 
-app.get("/users", validateQuery, getAutoSuggestUsers);
-
-app.get("/users/:id", validateId, getUser);
-
-app.post("/users", validateBody, createUser);
-
-app.patch("/users/:id", validateBody, validateId, changeUser);
-
-app.delete("/users/:id", validateId, deleteUser);
+app.use("/", userRouter);
 
 app.use(getError404);
 
