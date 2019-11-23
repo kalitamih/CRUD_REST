@@ -1,0 +1,25 @@
+{ 
+  "development":{ 
+     "replication":{ 
+        "read":[ 
+           { 
+              "host":"localhost"
+           }
+        ],
+        "write":{ 
+           "host":"localhost"
+        }
+     },
+     "username":"root",
+     "password":"nextgen",
+     "database":"users",
+     "pool":{ 
+        "min":5,
+        "max":14,
+        "idle":60000
+     },
+     "dialect":"postgres",
+     "logging":false,
+     "paranoid":false
+  }
+}

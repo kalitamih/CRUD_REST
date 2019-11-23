@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Joi, { ValidationError, ValidationErrorItem } from "joi";
+import Joi from "joi";
 
 const bodySchema = Joi.object().keys({
   age: Joi.number()
