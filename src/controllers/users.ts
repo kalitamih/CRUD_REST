@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import uuid from "uuid/v4";
 
 interface User {
   login: string;
@@ -14,74 +13,49 @@ interface ListUsers {
 
 const listUsers: ListUsers = {};
 
+interface UserData {
+  user?: User;
+  users?: User[];
+}
+
+interface UserRequest extends Request {
+  locals: UserData;
+}
+
 const sortByLogin = (id1: string, id2: string): number =>
   listUsers[id1].login > listUsers[id2].login ? 1 : -1;
 
-export const getAutoSuggestUsers = (
-  req: Request,
+export const getUsersController = (
+  req: UserRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const requiredUsers: string[] = [];
-  const { loginSubstring, limit } = req.query;
-  for (const id in listUsers) {
-    if (listUsers[id].login.indexOf(loginSubstring) !== -1) {
-      requiredUsers.push(id);
-    }
-  }
-  if (!requiredUsers.length) {
-    res.json({ error: "Appropritate users do not exist" });
-    return;
-  }
-  requiredUsers.sort(sortByLogin);
-  const users = requiredUsers.slice(0, limit).map(id => listUsers[id]);
-  res.json({ users });
+  const {
+    locals: { users = [] },
+    query: { limit = 0 as number },
+  } = req;
+  res.json({ users: users.slice(0, limit) });
   return;
 };
 
-export const getUser = (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const user = listUsers[id];
-  if (user && !user.isDeleted) {
-    res.json({ user });
-    return;
-  } else {
-    res.status(400).json({ error: `User with ${id} is not found` });
-    return;
-  }
+export const getUserController = (req: UserRequest, res: Response) => {
+  const { user } = req.locals;
+  res.status(200).json({ user });
 };
 
-export const createUser = (req: Request, res: Response) => {
-  const { body } = req;
-  const id = uuid();
-  listUsers[id] = { ...body, isDeleted: false };
-  res.status(201).json({ user: { id, ...listUsers[id] } });
+export const createUserController = (req: UserRequest, res: Response) => {
+  const { user } = req.locals;
+  delete user.isDeleted;
+  res.status(201).json({ user });
   return;
 };
 
-export const changeUser = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req;
-  const { id } = req.params;
-  const user = listUsers[id];
-  if (user && !user.isDeleted) {
-    listUsers[id] = { ...listUsers[id], ...body };
-    res.status(204).json({});
-    return;
-  } else {
-    res.status(400).json({ error: `User with ${id} is not found` });
-    return;
-  }
+export const changeUserController = (req: Request, res: Response) => {
+  res.status(204).json({});
+  return;
 };
 
-export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const user = listUsers[id];
-  if (user && !user.isDeleted) {
-    listUsers[id].isDeleted = true;
-    res.status(204).json({});
-    return;
-  } else {
-    res.status(400).json({ error: `User with ${id} is not found` });
-    return;
-  }
+export const deleteUserController = (req: Request, res: Response) => {
+  res.status(204).json({});
+  return;
 };

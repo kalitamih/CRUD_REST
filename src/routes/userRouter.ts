@@ -1,11 +1,18 @@
 import express from "express";
 import {
-  changeUser,
-  createUser,
-  deleteUser,
-  getAutoSuggestUsers,
-  getUser,
+  changeUserController,
+  createUserController,
+  deleteUserController,
+  getUserController,
+  getUsersController,
 } from "../controllers/users";
+import {
+  changeUserDB,
+  createUserDB,
+  deleteUserDB,
+  getUserDB,
+  getUsersDB,
+} from "../data-access/access";
 import {
   validateBody,
   validateId,
@@ -14,14 +21,20 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/users", validateQuery, getAutoSuggestUsers);
+userRouter.get("/users", validateQuery, getUsersDB, getUsersController);
 
-userRouter.get("/users/:id", validateId, getUser);
+userRouter.get("/users/:id", validateId, getUserDB, getUserController);
 
-userRouter.post("/users", validateBody, createUser);
+userRouter.post("/users", validateBody, createUserDB, createUserController);
 
-userRouter.patch("/users/:id", validateBody, validateId, changeUser);
+userRouter.patch(
+  "/users/:id",
+  validateBody,
+  validateId,
+  changeUserDB,
+  changeUserController
+);
 
-userRouter.delete("/users/:id", validateId, deleteUser);
+userRouter.delete("/users/:id", validateId, deleteUserDB, deleteUserController);
 
 export default userRouter;

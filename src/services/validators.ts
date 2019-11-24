@@ -7,9 +7,7 @@ const bodySchema = Joi.object().keys({
     .min(4)
     .max(130)
     .required(),
-  login: Joi.string()
-    .alphanum()
-    .required(),
+  login: Joi.string().alphanum(),
   password: Joi.string()
     .alphanum()
     .required(),
@@ -26,7 +24,9 @@ const querySchema = Joi.object().keys({
     .required(),
 });
 
-const idSchema = Joi.string().guid({ version: "uuidv4" });
+const idSchema = Joi.number()
+  .integer()
+  .min(1);
 
 export const validateBody = (req: Request, _: Response, next: NextFunction) => {
   const { body } = req;
