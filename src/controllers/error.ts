@@ -17,11 +17,6 @@ export const getError400 = (
   next(error);
 };
 
-export const getError500 = (
-  error: any,
-  _: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getError500 = (error: any, _: Request, res: Response) => {
   res.status(500).json({ error: "Server internal error" });
 };

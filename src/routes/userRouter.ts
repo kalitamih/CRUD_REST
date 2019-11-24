@@ -21,9 +21,9 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/users", validateQuery, getUsersDB, getUsersController);
-
 userRouter.get("/users/:id", validateId, getUserDB, getUserController);
+
+userRouter.get("/users", validateQuery, getUsersDB, getUsersController);
 
 userRouter.post("/users", validateBody, createUserDB, createUserController);
 

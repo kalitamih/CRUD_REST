@@ -26,7 +26,8 @@ const querySchema = Joi.object().keys({
 
 const idSchema = Joi.number()
   .integer()
-  .min(1);
+  .min(1)
+  .required();
 
 export const validateBody = (req: Request, _: Response, next: NextFunction) => {
   const { body } = req;
