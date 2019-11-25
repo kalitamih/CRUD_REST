@@ -18,7 +18,7 @@ export const dbConnect = async () => {
     Group.initModel(db);
     User.initRelationships();
     Group.initRelationships();
-    await db.sync({ force: true });
+    await db.sync();
     // tslint:disable-next-line: no-console
     console.log("Connection successfull");
   } catch (err) {

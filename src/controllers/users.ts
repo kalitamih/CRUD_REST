@@ -1,49 +1,20 @@
 import { NextFunction, Request, Response } from "express";
+import { DataRequest } from "../data-access/interface";
 
-interface User {
-  login: string;
-  passsword: string;
-  age: number;
-  isDeleted: boolean;
-}
-
-interface ListUsers {
-  [key: string]: User;
-}
-
-const listUsers: ListUsers = {};
-
-interface UserData {
-  user?: User;
-  users?: User[];
-}
-
-interface UserRequest extends Request {
-  locals: UserData;
-}
-
-const sortByLogin = (id1: string, id2: string): number =>
-  listUsers[id1].login > listUsers[id2].login ? 1 : -1;
-
-export const getUsersController = (
-  req: UserRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUsersController = (req: DataRequest, res: Response) => {
   const {
     locals: { users = [] },
-    query: { limit = 0 as number },
   } = req;
-  res.json({ users: users.slice(0, limit) });
+  res.json({ users });
   return;
 };
 
-export const getUserController = (req: UserRequest, res: Response) => {
+export const getUserController = (req: DataRequest, res: Response) => {
   const { user } = req.locals;
   res.status(200).json({ user });
 };
 
-export const createUserController = (req: UserRequest, res: Response) => {
+export const createUserController = (req: DataRequest, res: Response) => {
   const { user } = req.locals;
   delete user.isDeleted;
   res.status(201).json({ user });

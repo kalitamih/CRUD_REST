@@ -2,18 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { Op } from "sequelize";
 import { User } from "../models/user";
 import { BadRequestError } from "./error";
-
-interface UserData {
-  user?: User;
-  users?: User[];
-}
-
-interface UserRequest extends Request {
-  locals: UserData;
-}
+import { DataRequest } from "./interface";
 
 export const getUserDB = async (
-  req: UserRequest,
+  req: DataRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -36,7 +28,7 @@ export const getUserDB = async (
 };
 
 export const createUserDB = async (
-  req: UserRequest,
+  req: DataRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -117,14 +109,19 @@ export const changeUserDB = async (
 };
 
 export const getUsersDB = async (
-  req: UserRequest,
+  req: DataRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const { loginSubstring }: { loginSubstring: string } = req.query;
+  const {
+    loginSubstring,
+    limit,
+  }: { loginSubstring: string; limit: number } = req.query;
   try {
     const users = await User.findAll({
       attributes: { exclude: ["isDeleted"] },
+      limit,
+      order: [["login", "ASC"]],
       where: {
         isDeleted: false,
         login: {

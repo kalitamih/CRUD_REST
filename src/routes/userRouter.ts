@@ -12,7 +12,7 @@ import {
   deleteUserDB,
   getUserDB,
   getUsersDB,
-} from "../data-access/access";
+} from "../data-access/user";
 import {
   validateBody,
   validateId,
