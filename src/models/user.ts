@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import { Group } from "./group";
 
 export class User extends Model {
   public static readonly tableName = "users";
@@ -24,6 +25,7 @@ export class User extends Model {
         login: {
           allowNull: false,
           type: DataTypes.STRING,
+          unique: true,
         },
         password: {
           allowNull: false,
@@ -31,16 +33,14 @@ export class User extends Model {
         },
       },
       {
-        indexes: [
-          {
-            fields: ["login"],
-            unique: true,
-          },
-        ],
         sequelize,
         tableName: this.tableName,
       }
     );
+  }
+
+  public static initRelationships() {
+    User.belongsToMany(Group, { through: "usergroup", foreignKey: "userId" });
   }
 
   public id?: number;

@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { Group } from "../models/group";
 import { User } from "../models/user";
 
 const db = new Sequelize("users", "root", "nextgen", {
@@ -14,7 +15,10 @@ const db = new Sequelize("users", "root", "nextgen", {
 export const dbConnect = async () => {
   try {
     User.initModel(db);
-    await db.sync();
+    Group.initModel(db);
+    User.initRelationships();
+    Group.initRelationships();
+    await db.sync({ force: true });
     // tslint:disable-next-line: no-console
     console.log("Connection successfull");
   } catch (err) {

@@ -11,7 +11,8 @@ module.exports = {
       },
       login: {
         allowNull: false,
-        type: Sequelize.STRING       
+        type: Sequelize.STRING,
+        unique: true       
       },
       password: {
         allowNull: false,
@@ -26,11 +27,52 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN 
       },       
+    },
+    ); 
+    await queryInterface.createTable("groups", {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        unique: true       
+      },
+      permissions: {
+        allowNull: false,            
+        type: Sequelize.ARRAY(Sequelize.ENUM(['READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES']))
+      },       
+    }); 
+    return queryInterface.createTable("usergroup", { 
+      userId: {
+        type: Sequelize.INTEGER,         
+        references: {
+          model: "users",
+          key: "id",
+          primaryKey: true,          
+        },  
+        onDelete: "cascade",   
+        onUpdate: "cascade",
+      },
+      groupId: {
+        type: Sequelize.INTEGER,        
+        references: {
+          model: "groups",
+          key: "id",
+          primaryKey: true,
+        },  
+        onDelete: "cascade", 
+        onUpdate: "cascade", 
+      },       
     });
-    return queryInterface.addIndex("users", { unique: true, fields: ["login"] });    
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("users");
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("groups");
+    return queryInterface.dropTable("usergroup");
   }
 };

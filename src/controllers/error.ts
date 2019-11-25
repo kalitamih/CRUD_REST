@@ -6,17 +6,21 @@ export const getError404 = (_: Request, res: Response) => {
 
 export const getError400 = (
   error: any,
-  _: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   if (error.noData || error.isJoi) {
-    res.status(400).json({ error });
-    return;
+    return res.status(400).json({ error });
   }
   next(error);
 };
 
-export const getError500 = (error: any, _: Request, res: Response) => {
+export const getError500 = (
+  error: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.status(500).json({ error: "Server internal error" });
 };
