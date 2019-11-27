@@ -17,7 +17,7 @@ import {
   validateBody,
   validateId,
   validateQuery,
-} from "../services/validators";
+} from "../services/userValidators";
 
 const userRouter = express.Router();
 

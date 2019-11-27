@@ -46,13 +46,12 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.ENUM(['READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES']))
       },       
     }); 
-    return queryInterface.createTable("usergroup", { 
+    await queryInterface.createTable("usergroup", { 
       userId: {
         type: Sequelize.INTEGER,         
         references: {
           model: "users",
-          key: "id",
-          primaryKey: true,          
+          key: "id",               
         },  
         onDelete: "cascade",   
         onUpdate: "cascade",
@@ -61,12 +60,15 @@ module.exports = {
         type: Sequelize.INTEGER,        
         references: {
           model: "groups",
-          key: "id",
-          primaryKey: true,
+          key: "id",      
         },  
         onDelete: "cascade", 
         onUpdate: "cascade", 
       },       
+    });
+    return queryInterface.addConstraint('usergroup', ['userId', 'groupId'], {
+      type: 'primary key',
+      name: 'usergroup_pkey'
     });
   },
 

@@ -7,12 +7,20 @@ module.exports = {
       { login: 'Mikhail', password: 'equebbdhjbds378273', age: 45 },
       { login: 'Frank', password: 'Chelsea2019', age: 42 },
     ], {});
-    return queryInterface.bulkInsert('groups', [
-      { name: 'Chelsea', permissions: [] },
+    await queryInterface.bulkInsert('groups', [
+      { name: 'Chelsea', permissions: Sequelize.literal(`ARRAY['READ', 'WRITE']::"enum_groups_permissions"[]`), },
+      { name: 'Lester', permissions: Sequelize.literal(`ARRAY['READ', 'DELETE', 'SHARE', 'UPLOAD_FILES']::"enum_groups_permissions"[]`), },
+    ], {});
+    return queryInterface.bulkInsert('usergroup', [
+      { userId: 1, groupId: 1, },
+      { userId: 2, groupId: 2, },
+      { userId: 1, groupId: 2, },
     ], {});
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('users', null, {});
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("groups");
+    return queryInterface.dropTable("usergroup");
   }
 };
