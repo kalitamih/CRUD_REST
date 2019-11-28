@@ -2,6 +2,7 @@ import express from "express";
 import { getError400, getError404, getError500 } from "./controllers/error";
 import { dbConnect } from "./data-access/connect";
 import groupRouter from "./routes/groupRouter";
+import userGroupRouter from "./routes/userGroupRouter";
 import userRouter from "./routes/userRouter";
 
 const app = express();
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use("/", userRouter);
 
 app.use("/", groupRouter);
+
+app.use("/", userGroupRouter);
 
 app.use(getError404);
 

@@ -1,5 +1,4 @@
 import { Sequelize } from "sequelize";
-import { getUserGroup } from "../data-access/usergroup";
 import { Group } from "../models/group";
 import { User } from "../models/user";
 
@@ -20,7 +19,6 @@ export const dbConnect = async () => {
     User.initRelationships();
     Group.initRelationships();
     await db.sync();
-    getUserGroup();
     // tslint:disable-next-line: no-console
     console.log("Connection successfull");
   } catch (err) {

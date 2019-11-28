@@ -51,7 +51,7 @@ export class Group extends Model {
 
   public getUsers!: HasManyGetAssociationsMixin<User>;
   public addUsers!: HasManyAddAssociationMixin<User, number[]>;
-  public removeUsers!: HasManyRemoveAssociationMixin<User, number>;
+  public removeUsers!: HasManyRemoveAssociationMixin<User, number[]>;
 
   public id?: number;
   public name!: string;
