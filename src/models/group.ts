@@ -1,4 +1,15 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import {
+  Association,
+  DataTypes,
+  HasManyAddAssociationMixin,
+  HasManyCountAssociationsMixin,
+  HasManyCreateAssociationMixin,
+  HasManyGetAssociationsMixin,
+  HasManyHasAssociationMixin,
+  HasManyRemoveAssociationMixin,
+  Model,
+  Sequelize,
+} from "sequelize";
 import { User } from "./user";
 
 type Permissions = "READ" | "WRITE" | "DELETE" | "SHARE" | "UPLOAD_FILES";
@@ -37,6 +48,10 @@ export class Group extends Model {
   public static initRelationships() {
     Group.belongsToMany(User, { through: "usergroup", foreignKey: "groupId" });
   }
+
+  public getUsers!: HasManyGetAssociationsMixin<User>;
+  public addUsers!: HasManyAddAssociationMixin<User, number[]>;
+  public removeUsers!: HasManyRemoveAssociationMixin<User, number>;
 
   public id?: number;
   public name!: string;
