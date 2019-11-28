@@ -44,8 +44,6 @@ export const changeUsersToGroup = async (
     await t.commit();
     next();
   } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
     await t.rollback();
     next(err);
   }

@@ -4,6 +4,7 @@ import { dbConnect } from "./data-access/connect";
 import groupRouter from "./routes/groupRouter";
 import userGroupRouter from "./routes/userGroupRouter";
 import userRouter from "./routes/userRouter";
+import { loggerInfo } from "./utils/logger";
 
 const app = express();
 const port = 8081;
@@ -11,6 +12,8 @@ const port = 8081;
 dbConnect();
 
 app.use(express.json());
+
+app.use(loggerInfo);
 
 app.use("/", userRouter);
 

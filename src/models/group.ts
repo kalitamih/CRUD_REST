@@ -1,11 +1,7 @@
 import {
-  Association,
   DataTypes,
   HasManyAddAssociationMixin,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
   HasManyGetAssociationsMixin,
-  HasManyHasAssociationMixin,
   HasManyRemoveAssociationMixin,
   Model,
   Sequelize,

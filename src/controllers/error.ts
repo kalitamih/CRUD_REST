@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { logger } from "../utils/logger";
 
 export const getError404 = (_: Request, res: Response) => {
   res.status(404).json({ error: "Page not found" });
@@ -17,10 +18,12 @@ export const getError400 = (
 };
 
 export const getError500 = (
-  error: any,
+  error: Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const { message } = error;
+  logger.error(message);
   res.status(500).json({ error: "Server internal error" });
 };
