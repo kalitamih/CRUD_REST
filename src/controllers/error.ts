@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { logger } from "../utils/logger";
 
-export const getError404 = (_: Request, res: Response) => {
+export const getError404 = (req: Request, res: Response) => {
   res.status(404).json({ error: "Page not found" });
 };
 
@@ -12,6 +12,11 @@ export const getError400 = (
   next: NextFunction
 ) => {
   if (error.noData || error.isJoi) {
+    const { body, method, url } = req;
+    const { message } = error;
+    logger.error(
+      `method: ${method}, url: ${url}, body: ${body}, description: ${message}`
+    );
     return res.status(400).json({ error });
   }
   next(error);

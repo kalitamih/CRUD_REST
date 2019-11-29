@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import winston from "winston";
+import winston, { format } from "winston";
 
 export const logger = winston.createLogger({
+  format: format.combine(format.timestamp(), format.json()),
   transports: [new winston.transports.Console()],
 });
 

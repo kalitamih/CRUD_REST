@@ -1,8 +1,9 @@
 import { Sequelize } from "sequelize";
 import { Group } from "../models/group";
 import { User } from "../models/user";
+import { logger } from "../utils/logger";
 
-const db = new Sequelize("users", "root", "nextgen", {
+export const db = new Sequelize("users", "root", "nextgen", {
   define: {
     timestamps: false,
   },
@@ -19,10 +20,9 @@ export const dbConnect = async () => {
     User.initRelationships();
     Group.initRelationships();
     await db.sync();
-    // tslint:disable-next-line: no-console
-    console.log("Connection successfull");
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
+    logger.info("Connection successfull");
+  } catch ({ message }) {
+    logger.error(message);
+    process.exit(-1);
   }
 };
