@@ -4,26 +4,12 @@ import { User } from "../models/user";
 import { BadRequestError } from "./error";
 import { DataRequest } from "./interface";
 
-export const getUserDB = async (
-  req: DataRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-
-  try {
-    const user = await User.findByPk(id, {
-      attributes: { exclude: ["isDeleted"] },
-    });
-    if (!user || user.isDeleted) {
-      next(new BadRequestError(`User with id ${id} is not found`));
-    }
-    req.locals = { user };
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
+export const getUserDB = async (id: string) => {
+  const user = await User.findByPk(id, {
+    attributes: { exclude: ["isDeleted"] },
+  });
+  if (!user || user.isDeleted) {
+    throw new BadRequestError(`User with id ${id} is not found`);
   }
 };
 

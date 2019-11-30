@@ -30,8 +30,7 @@ export const deleteGroupDB = async (id: string) => {
   }
 };
 
-export const changeGroupDB = async (id: string, body: Group) => {
-  const { permissions } = body;
+export const changeGroupDB = async (id: string, { permissions }: Group) => {
   const updatedGroup = await Group.update(
     { permissions },
     {
