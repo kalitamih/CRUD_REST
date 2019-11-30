@@ -1,7 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import { Group } from "../models/group";
 import { BadRequestError } from "./error";
-import { DataRequest } from "./interface";
 
 export const getGroupDB = async (id: string) => {
   const group = await Group.findByPk(id);
