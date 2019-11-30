@@ -3,114 +3,46 @@ import { Group } from "../models/group";
 import { BadRequestError } from "./error";
 import { DataRequest } from "./interface";
 
-export const getGroupDB = async (
-  req: DataRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-  try {
-    const group = await Group.findByPk(id);
-    if (!group) {
-      next(new BadRequestError(`Group with id ${id} is not found`));
-      return;
-    }
-    req.locals = { group };
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
+export const getGroupDB = async (id: string) => {
+  const group = await Group.findByPk(id);
+  if (!group) {
+    throw new BadRequestError(`Group with id ${id} is not found`);
+  }
+  return group;
+};
+
+export const createGroupDB = async (body: Group) => {
+  const { name } = body;
+  const group = await Group.findOne({ where: { name } });
+  if (group) {
+    throw new BadRequestError(`Group with name ${name} has already existed.`);
+  }
+  const result = await Group.create(body);
+  return result.toJSON();
+};
+
+export const deleteGroupDB = async (id: string) => {
+  const deletedGroup = await Group.destroy({
+    where: { id },
+  });
+  if (!deletedGroup) {
+    throw new BadRequestError(`Group with id ${id} is not found`);
   }
 };
 
-export const createGroupDB = async (
-  req: DataRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { body }: { body: Group } = req;
-  try {
-    const { name } = body;
-    const group = await Group.findOne({ where: { name } });
-    if (group) {
-      next(new BadRequestError(`Group with name ${name} has already existed.`));
-      return;
+export const changeGroupDB = async (id: string, body: Group) => {
+  const { permissions } = body;
+  const updatedGroup = await Group.update(
+    { permissions },
+    {
+      where: {
+        id,
+      },
     }
-    const result = await Group.create(body);
-    req.locals = { group: result.toJSON() as Group };
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
+  );
+  if (!updatedGroup) {
+    throw new BadRequestError(`Group with id ${id} is not found`);
   }
 };
 
-export const deleteGroupDB = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-  try {
-    const deletedGroup = await Group.destroy({
-      where: { id },
-    });
-    if (!deletedGroup) {
-      next(new BadRequestError(`Group with id ${id} is not found`));
-      return;
-    }
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
-  }
-};
-
-export const changeGroupDB = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-  const {
-    body: { permissions },
-  }: { body: Group } = req;
-  try {
-    const group = await Group.findByPk(id);
-    const updatedGroup = await Group.update(
-      { permissions },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-    if (!updatedGroup) {
-      next(new BadRequestError(`Group with id ${id} is not found`));
-    }
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
-  }
-};
-
-export const getGroupsDB = async (
-  req: DataRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const groups = await Group.findAll({});
-    req.locals = { groups };
-    next();
-  } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
-    next(err);
-  }
-};
+export const getGroupsDB = async () => await Group.findAll({});

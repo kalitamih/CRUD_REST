@@ -1,23 +1,23 @@
 import express from "express";
+import httpServer from "http";
+import { PORT, SHUTDOWN_TIMEOUT } from "./constants";
 import { getError400, getError404, getError500 } from "./controllers/error";
 import { db, dbConnect } from "./data-access/connect";
 import groupRouter from "./routes/groupRouter";
 import userGroupRouter from "./routes/userGroupRouter";
 import userRouter from "./routes/userRouter";
-import { logger, loggerInfo } from "./utils/logger";
+import { closeConnections, logger, loggerInfo } from "./utils/logger";
+import { timeout } from "./utils/timeout";
 
 const app = express();
-const port = 8081;
-
-import httpServer from "http";
 
 const server = httpServer.createServer(app);
 
 dbConnect();
 
-app.use(express.json());
-
 app.use(loggerInfo);
+
+app.use(express.json());
 
 app.use("/", userRouter);
 
@@ -31,25 +31,30 @@ app.use(getError400);
 
 app.use(getError500);
 
+const gracefulShutdown = async () => {
+  server.close(error => {
+    if (error) {
+      logger.error(error);
+      process.exit(1);
+    }
+  });
+  await timeout(SHUTDOWN_TIMEOUT);
+  await db.close();
+  await closeConnections();
+};
+
 process
-  .on("unhandledRejection", reason => {
+  .on("unhandledRejection", async reason => {
     logger.error(reason);
-    logger.info("Closing http server.");
-    server.close(async () => {
-      logger.info("Http server closed.");
-      process.exit(-1);
-    });
+    await gracefulShutdown();
+    process.exit(0);
   })
-  .on("uncaughtException", ({ message }) => {
-    logger.error(message);
-    logger.info("Closing http server.");
-    server.close(() => {
-      logger.info("Http server closed.");
-      process.exit(-1);
-    });
+  .on("uncaughtException", async error => {
+    logger.error(error);
+    await gracefulShutdown();
+    process.exit(0);
   });
 
-server.listen(port, () => {
-  // tslint:disable-next-line:no-console
-  console.log(`server started at http://localhost:${port}`);
+server.listen(PORT, () => {
+  logger.info(`server started at http://localhost:${PORT}`);
 });

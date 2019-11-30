@@ -6,13 +6,7 @@ import {
   getGroupController,
   getGroupsController,
 } from "../controllers/groups";
-import {
-  changeGroupDB,
-  createGroupDB,
-  deleteGroupDB,
-  getGroupDB,
-  getGroupsDB,
-} from "../data-access/group";
+import { getGroupsDB } from "../data-access/group";
 import {
   validateBody,
   validateId,
@@ -21,25 +15,19 @@ import {
 
 const groupRouter = express.Router();
 
-groupRouter.get("/groups/:id", validateId, getGroupDB, getGroupController);
+groupRouter.get("/groups/:id", validateId, getGroupController);
 
-groupRouter.get("/groups", getGroupsDB, getGroupsController);
+groupRouter.get("/groups", getGroupsController);
 
-groupRouter.post("/groups", validateBody, createGroupDB, createGroupController);
+groupRouter.post("/groups", validateBody, createGroupController);
 
 groupRouter.patch(
   "/groups/:id",
   validateId,
   validatePermissions,
-  changeGroupDB,
   changeGroupController
 );
 
-groupRouter.delete(
-  "/groups/:id",
-  validateId,
-  deleteGroupDB,
-  deleteGroupController
-);
+groupRouter.delete("/groups/:id", validateId, deleteGroupController);
 
 export default groupRouter;
