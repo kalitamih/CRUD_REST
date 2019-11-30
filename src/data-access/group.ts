@@ -18,8 +18,6 @@ export const getGroupDB = async (
     req.locals = { group };
     next();
   } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
     next(err);
   }
 };
@@ -41,8 +39,6 @@ export const createGroupDB = async (
     req.locals = { group: result.toJSON() as Group };
     next();
   } catch (err) {
-    // tslint:disable-next-line: no-console
-    console.log(err);
     next(err);
   }
 };
