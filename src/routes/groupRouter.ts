@@ -6,7 +6,6 @@ import {
   getGroupController,
   getGroupsController,
 } from "../controllers/groups";
-import { getGroupsDB } from "../data-access/group";
 import {
   validateBody,
   validateId,
