@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { SECRET_TOKEN } from "../constants";
 import { logger } from "../utils/logger";
 
 export const authorization = async (
@@ -13,7 +14,7 @@ export const authorization = async (
 
   if (token) {
     try {
-      await jwt.verify(token as string, "secret");
+      await jwt.verify(token as string, SECRET_TOKEN);
       next();
     } catch (err) {
       logger.error(err);

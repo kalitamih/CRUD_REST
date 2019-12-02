@@ -6,7 +6,7 @@ import {
   deleteUserDB,
   getUserDB,
   getUsersDB,
-} from "../data-access/user";
+} from "../data-access/postgresql/user";
 import { User } from "../models/user";
 
 export const getUsersController = async (

@@ -1,4 +1,4 @@
-import { Group } from "../models/group";
+import { Group } from "../../models/group";
 import { BadRequestError } from "./error";
 
 export const getGroupDB = async (id: string) => {

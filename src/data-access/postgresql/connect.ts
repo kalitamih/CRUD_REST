@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
-import { Group } from "../models/group";
-import { User } from "../models/user";
-import { logger } from "../utils/logger";
+import { Group } from "../../models/group";
+import { User } from "../../models/user";
+import { logger } from "../../utils/logger";
 
 export const db = new Sequelize("users", "root", "nextgen", {
   define: {

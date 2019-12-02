@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserGroup } from "../data-access/interface";
-import { changeUsersToGroup } from "../data-access/usergroup";
+import { changeUsersToGroup } from "../data-access/postgresql/usergroup";
 
 export const changeUserGroupController = async (
   req: Request,

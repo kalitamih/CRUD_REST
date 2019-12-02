@@ -5,7 +5,7 @@ import {
   deleteGroupDB,
   getGroupDB,
   getGroupsDB,
-} from "../data-access/group";
+} from "../data-access/postgresql/group";
 import { Group } from "../models/group";
 
 export const getGroupsController = async (

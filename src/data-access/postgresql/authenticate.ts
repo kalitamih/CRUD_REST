@@ -1,4 +1,4 @@
-import { User } from "../models/user";
+import { User } from "../../models/user";
 import { BadRequestError } from "./error";
 
 export const getUserDBByLogin = async (login: string) => {

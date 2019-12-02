@@ -1,5 +1,5 @@
-import { Group } from "../models/group";
-import { User } from "../models/user";
+import { Group } from "../../models/group";
+import { User } from "../../models/user";
 import { BadRequestError } from "./error";
 
 export const changeUsersToGroup = async (
