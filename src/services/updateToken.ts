@@ -7,7 +7,7 @@ export const updateToken = async (login: string, refreshUserToken: string) => {
     try {
       const refreshToken = await redisClient.getAsync(login);
       if (refreshToken === refreshUserToken) {
-        redisClient.delAsync(login);
+        await redisClient.delAsync(login);
         return createToken(login);
       }
       throw new Error("No refresh token provided.");

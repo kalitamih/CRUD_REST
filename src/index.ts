@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import httpServer from "http";
 import { PORT, SHUTDOWN_TIMEOUT } from "./constants";
@@ -20,6 +21,8 @@ const server = httpServer.createServer(app);
 dbConnect();
 
 app.use(loggerInfo);
+
+app.use(cors());
 
 app.use(express.json());
 
