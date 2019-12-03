@@ -29,7 +29,11 @@ const idSchema = Joi.number()
   .min(1)
   .required();
 
-export const validateBody = (req: Request, _: Response, next: NextFunction) => {
+export const validateBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { body } = req;
   const { error } = Joi.validate(body, bodySchema);
   if (error) {
@@ -38,7 +42,7 @@ export const validateBody = (req: Request, _: Response, next: NextFunction) => {
   next();
 };
 
-export const validateId = (req: Request, _: Response, next: NextFunction) => {
+export const validateId = (req: Request, res: Response, next: NextFunction) => {
   const {
     params: { id },
   } = req;
@@ -51,7 +55,7 @@ export const validateId = (req: Request, _: Response, next: NextFunction) => {
 
 export const validateQuery = (
   req: Request,
-  _: Response,
+  res: Response,
   next: NextFunction
 ) => {
   const { query } = req;

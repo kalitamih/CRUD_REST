@@ -4,8 +4,8 @@ import {
   REFRESH_TOKEN_EXPIRES_IN,
   SECRET_TOKEN,
   TOKEN_EXPIRES_IN,
-} from "../constants";
-import { redisClient } from "../data-access/redis/connect";
+} from "../../constants";
+import { redisClient } from "../../data-access/redis/connect";
 
 export const createToken = async (login: string) => {
   const token = await jwt.sign(

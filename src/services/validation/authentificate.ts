@@ -10,7 +10,11 @@ const bodySchema = Joi.object().keys({
     .required(),
 });
 
-export const validateBody = (req: Request, _: Response, next: NextFunction) => {
+export const validateBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { body } = req;
   const { error } = Joi.validate(body, bodySchema);
   if (error) {

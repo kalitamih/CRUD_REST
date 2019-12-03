@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../models/user";
-import { authentificateUser } from "../services/authenticate";
+import { authentificateUser } from "../services/authentication/authenticate";
 import { logger } from "../utils/logger";
 
 export const sentToken = async (

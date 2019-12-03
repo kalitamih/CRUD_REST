@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import httpServer from "http";
+import swaggerUi from "swagger-ui-express";
 import { PORT, SHUTDOWN_TIMEOUT } from "./constants";
 import { getError400, getError404, getError500 } from "./controllers/error";
 import { db, dbConnect } from "./data-access/postgresql/connect";
@@ -9,10 +10,10 @@ import groupRouter from "./routes/groupRouter";
 import tokenRouter from "./routes/tokenRouter";
 import userGroupRouter from "./routes/userGroupRouter";
 import userRouter from "./routes/userRouter";
+import { authorization } from "./services/authorization/middleware";
+import * as swaggerDocument from "./swagger.json";
 import { closeConnections, logger, loggerInfo } from "./utils/logger";
 import { timeout } from "./utils/timeout";
-
-import { authorization } from "./services/authorization";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(loggerInfo);
 app.use(cors());
 
 app.use(express.json());
+
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/", tokenRouter);
 

@@ -10,7 +10,7 @@ import {
   validateBody,
   validateId,
   validateQuery,
-} from "../services/userValidators";
+} from "../services/validation/users";
 
 const userRouter = express.Router();
 

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { REFRESH_SECRET_TOKEN } from "../constants";
-import { updateToken } from "../services/updateToken";
+import { updateToken } from "../services/authorization/updateToken";
 import { logger } from "../utils/logger";
 
 interface JwtPayload {

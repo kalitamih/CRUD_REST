@@ -1,6 +1,6 @@
 import express from "express";
 import { changeUserGroupController } from "../controllers/usergroup";
-import { validateBody } from "../services/userGroupValidators";
+import { validateBody } from "../services/validation/userGroup";
 
 const userGroupRouter = express.Router();
 

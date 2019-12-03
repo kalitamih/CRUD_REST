@@ -10,7 +10,7 @@ import {
   validateBody,
   validateId,
   validatePermissions,
-} from "../services/groupValidators";
+} from "../services/validation/groups";
 
 const groupRouter = express.Router();
 

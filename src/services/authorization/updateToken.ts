@@ -1,4 +1,4 @@
-import { redisClient } from "../data-access/redis/connect";
+import { redisClient } from "../../data-access/redis/connect";
 
 import { createToken } from "./createToken";
 
@@ -7,7 +7,6 @@ export const updateToken = async (login: string, refreshUserToken: string) => {
     try {
       const refreshToken = await redisClient.getAsync(login);
       if (refreshToken === refreshUserToken) {
-        await redisClient.delAsync(login);
         return createToken(login);
       }
       throw new Error("No refresh token provided.");

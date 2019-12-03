@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_TOKEN } from "../constants";
-import { logger } from "../utils/logger";
+import { SECRET_TOKEN } from "../../constants";
+import { logger } from "../../utils/logger";
 
 export const authorization = async (
   req: Request,

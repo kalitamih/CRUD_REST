@@ -1,6 +1,6 @@
 import express from "express";
 import { sentToken } from "../controllers/authentificate";
-import { validateBody } from "../services/authentificateValidator";
+import { validateBody } from "../services/validation/authentificate";
 
 const authentificateRouter = express.Router();
 
