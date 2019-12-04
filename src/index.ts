@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import httpServer from "http";
+import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { PORT, SHUTDOWN_TIMEOUT } from "./constants";
 import { getError400, getError404, getError500 } from "./controllers/error";
@@ -11,13 +12,31 @@ import tokenRouter from "./routes/tokenRouter";
 import userGroupRouter from "./routes/userGroupRouter";
 import userRouter from "./routes/userRouter";
 import { authorization } from "./services/authorization/middleware";
-import * as swaggerDocument from "./swagger.json";
 import { closeConnections, logger, loggerInfo } from "./utils/logger";
 import { timeout } from "./utils/timeout";
 
 const app = express();
 
 const server = httpServer.createServer(app);
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      apis: ["**/routes/*.ts"],
+      contact: {
+        name: "Amazing Developer",
+      },
+      description: "Customer API Information",
+
+      title: "Customer API",
+      // servers: ["http://localhost:5000"]
+    },
+  },
+  // ['.routes/*.js']
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions as any);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 dbConnect();
 
@@ -26,8 +45,6 @@ app.use(loggerInfo);
 app.use(cors());
 
 app.use(express.json());
-
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/", tokenRouter);
 

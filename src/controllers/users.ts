@@ -34,7 +34,7 @@ export const getUserController = async (
   try {
     const user = await getUserDB(id);
     delete user.isDeleted;
-    res.status(200).json({ user });
+    return res.status(200).json({ user });
   } catch (err) {
     next(err);
   }
