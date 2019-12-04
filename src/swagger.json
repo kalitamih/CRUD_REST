@@ -1,193 +1,154 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "version": "1.0.0",
-        "title": "Seans-TypeScript-NodeJS-CRUD-REST-API",
-        "description": "A minimal and easy to follow example of what you need to create a CRUD style API in NodeJs using TypeScript",
-        "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
-        }
-    },
-    "servers": [
-        {
-            "url": "/",
-            "description": "Local Dev"
-        }
-    ],
-    "tags": [
-        {
-            "name": "Users",
-            "description": "API for users route in the system"
-        }
-    ],
-    "consumes": [
-        "appliUserion/json"
-    ],
-    "produces": [
-        "appliUserion/json"
-    ],
-    "paths": {
-        "/users": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get all Users in system",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Users"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Create a new user in system",
-                "requestBody": {
-                    "description": "User Object",
-                    "required": true,
-                    "content": {
-                        "appliUserion/json": {
-                            "schema": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    }
-                },
-                "produces": [
-                    "appliUserion/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Bad post data."
-                    }
-                }
-            }
-        },
-        "/users/{id}": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of the user that we want to match",
-                    "type": "string"
-                }
-            ],
-            "patch": {
-                "summary": "Update user with given ID",
-                "tags": [
-                    "Users"
-                ],
-                "requestBody": {
-                    "description": "User Object",
-                    "required": true,
-                    "content": {
-                        "appliUserion/json": {
-                            "schema": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    }
-                },
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "User with new values of properties",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Bad post data."
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete User with given ID",
-                "tags": [
-                    "Users"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "Delete User with id",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    },
-                    "404": {
-                        "description": "Failed. User not found."
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "id": {
-            "properties": {
-                "uuid": {
-                    "type": "string"
-                }
-            }
-        },
-        "User": {
-            "type": "object",
-            "properties": {
-                "login": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },          
-                "age": {
-                    "type": "integer", 
-                    "minimum": 4,
-                    "maximum": 120
-                }
-            }
-        },
-        "Users": {
-            "type": "object",
-            "properties": {
-                "Users": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/User"
-                    }
-                }
-            }
-        }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger is Petstore"
+  },
+  "tags": [
+    {
+      "name": "users",
+      "description": "Info about users"
     }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Add a new user",
+        "description": "",
+        "operationId": "createUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Find user by ID",
+        "description": "Returns a single user",
+        "operationId": "getUserById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update an existing user",
+        "operationId": "updateUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": [
+        "login",
+        "password",
+        "age"
+      ],
+      "properties": {
+        "login": {
+          "type": "string",
+          "example": "Mikhail"
+        },
+        "password": {
+          "type": "string",
+          "example": "Mikhail"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 4,
+          "maximum": 120
+        }
+      }
+    }
+  }
 }
