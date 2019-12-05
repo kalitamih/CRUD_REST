@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_TOKEN } from "../../constants";
+import { SECRET_TOKEN, STAGE } from "../../constants";
 import { logger } from "../../utils/logger";
 
 export const authorization = async (
@@ -11,6 +11,11 @@ export const authorization = async (
   const {
     headers: { token },
   } = req;
+
+  if (STAGE === "dev") {
+    next();
+    return;
+  }
 
   if (token) {
     try {
